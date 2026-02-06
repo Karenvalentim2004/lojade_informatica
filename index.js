@@ -51,11 +51,27 @@ conexao.connect(function (erro) {
 
 // Read All - [GET] / produtos
 
-app.get("/produtos", function (req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    conexao.query("SELECT * FROM produtos order by preco asc", function (erro, lista_produtos, campos) {
-        console.log(lista_produtos);
-        res.send(lista_produtos)
+// app.get("/produtos", function (req, res) {
+//     res.setHeader('Access-Control-Allow-Origin', '*')
+//     conexao.query("SELECT * FROM gutoxa27_bd_loja.produtos", function (erro, lista_produtos, campos) {
+//         console.log(lista_produtos);
+//         res.send(lista_produtos)
+//     })
+// })
+
+// app.get("/unidades", function (req, res) {
+//     res.setHeader('Access-Control-Allow-Origin', '*')
+//     conexao.query("SELECT * FROM gutoxa27_bd_loja.unidades", function (erro, lista_unidades, campos) {
+//         console.log(lista_unidades);
+//         res.send(lista_unidades)
+//     })
+// })
+
+app.get("/produtos/:categoria", function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', "*")
+    const categoria = req.params.categoria
+    conexao.query(`SELECT * FROM produtos where categoria='${categoria}'`, function (erro, dados, campos) {
+        res.send(dados)
     })
 })
 

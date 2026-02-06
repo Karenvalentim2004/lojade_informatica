@@ -1,43 +1,33 @@
-function fnMontarCardUnidades(unidades){
+function fnMontarCardUnidades(unidades) {
     let cartao = `
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3">
-                <div class="card">
-                    <img src="${produto.foto}"
-                        class="card-img-top" alt="${produto.nome}">
-                    <div class="card-body">
-                        <h5 class="card-title">${produto.titulo}</h5>
-                        <p class="card-text">${produto.descricao}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="h5 mb-0">R$ ${produto.preco}</span>
-                            <div>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star text-warning"></i>
-                                <small class="text-muted">(${produto.avaliacao})</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-between bg-light">
-                        <button class="btn btn-primary btn-sm">Comprar</button>
-                        <button class="btn btn-outline-secondary btn-sm"><i class="bi bi-heart"></i></button>
-                    </div>
+            <div class="card h-100">
+                <img src="${unidades.foto}" class="card-img-top" alt="${unidades.nome}">
+                <div class="card-body">
+                    <h5 class="card-title">${unidades.nome_da_loja}</h5>
+                    <p class="card-text">
+                        <strong>Endereço:</strong> ${unidades.endereco}<br>
+                        <strong>Email:</strong> ${unidades.email}<br>
+                        <strong>Telefone:</strong> ${unidades.telefone}
+                    </p>
                 </div>
             </div>
+        </div>
     `
-    document.querySelector(".lista-produtos").innerHTML += cartao
+    document.querySelector(".lista-unidades").innerHTML += cartao
 }
 
-function fnCarregarDados(){
-    fetch('http://localhost:3000/unidades/', { method: 'GET'})
-    .then(response => response.json ())
-    .then((unidades) => {
-        unidades.forEach(unidades => {
-            fnMontarCardUnidades(unidades)
-        });
-    })
-    .catch(erro => console.log(erro.message))
+
+
+function fnCarregarDados() {
+    fetch('http://localhost:3000/unidades', { method: 'GET' })
+        .then(response => response.json())
+        .then((unidades) => {
+            unidades.forEach(unidades => {
+                fnMontarCardUnidades(unidades)
+            });
+        })
+        .catch(erro => console.log(erro.message))
 }
 
 fnCarregarDados()
