@@ -36,11 +36,11 @@ function fnCarregarDados() {
 
     let rota_categoria = ""
     let rota_ordem = ""
-    
+
     if (existe_categoria) {
         rota_categoria = parametros.get('categoria') + "/"
     }
-    
+
     if (existe_ordem) {
         rota_ordem = parametros.get('ordem')
     }
@@ -56,3 +56,23 @@ function fnCarregarDados() {
 }
 
 fnCarregarDados()
+
+function fnCriarLink() {
+    const parametros = new URLSearchParams(window.location.search)
+    const existe_categoria = parametros.has('categoria')
+
+    const link = document.querySelector("#ordem_preco");
+    const link2 = document.querySelector("#ordem_titulo");
+
+    if (existe_categoria) {
+        link.href = window.location.pathname + "?categoria=" + parametros.get('categoria') + "&ordem=preco";
+        link2.href = window.location.pathname + "?categoria=" + parametros.get('categoria') + "&ordem=titulo";
+    } else {
+        link.href = window.location.pathname;
+        link2.href = window.location.pathname;
+    }
+
+    //link.href = window.location.pathname + "?categoria=" + (existe_categoria ? parametros.get('categoria') : "camisetas") + "&ordem=preco";
+}
+
+fnCriarLink()

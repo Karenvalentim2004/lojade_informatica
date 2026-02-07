@@ -18,7 +18,6 @@ function fnMontarCardUnidades(unidades) {
 }
 
 
-
 function fnCarregarDados() {
     fetch('http://localhost:3000/unidades', { method: 'GET' })
         .then(response => response.json())

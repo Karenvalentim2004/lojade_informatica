@@ -84,6 +84,6 @@ app.get("/unidades", function (req, res) {
         console.log(lista_unidades);
         res.send(lista_unidades)
     })
-})
+}) 
 
 app.listen(3000)
