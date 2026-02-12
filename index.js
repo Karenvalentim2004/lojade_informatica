@@ -1,8 +1,10 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
+app.use(cors())
 
 app.get('/', function (req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*')
+    // res.setHeader('Access-Control-Allow-Origin', '*')
     res.send('ZecaInfo')
 })
 
@@ -54,7 +56,7 @@ conexao.connect(function (erro) {
 app.get("/produtos", function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*')
     conexao.query("SELECT * FROM gutoxa27_bd_loja.produtos", function (erro, lista_produtos, campos) {
-        console.log(lista_produtos);
+        // console.log(lista_produtos);
         res.send(lista_produtos)
     })
 })
@@ -73,10 +75,24 @@ app.get("/produtos/:categoria/:ordem", function (req, res) {
     const categoria = req.params.categoria
     const ordem = req.params.ordem
     console.log(ordem)
-    conexao.query(`SELECT * FROM produtos where categoria ='${categoria}' order by ${ordem} asc ` , function (erro, dados, campos) {
+    conexao.query(`SELECT * FROM produtos where categoria ='${categoria}' order by ${ordem} asc `, function (erro, dados, campos) {
         res.send(dados)
     })
 })
+
+app.post("/produto/", function (req, res) {
+    console.dir(req) 
+    console.log("---------------------")
+    const { titulo, preco, descricao, avaliacao, foto, categoria } = req.body;
+    conexao.query(`
+        INSERT INTO produtos (titulo, preco, descricao, avaliacao, foto, categoria) VALUES ('${titulo}', ${preco}, '${descricao}', ${avaliacao}, '${foto}', '${categoria}')`, function (erro, resultado) {
+        if (erro) {
+            res.json(erro);
+        }
+        res.send(resultado.insertId);
+    });
+})
+
 
 app.get("/unidades", function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -84,6 +100,6 @@ app.get("/unidades", function (req, res) {
         console.log(lista_unidades);
         res.send(lista_unidades)
     })
-}) 
+})
 
 app.listen(3000)
