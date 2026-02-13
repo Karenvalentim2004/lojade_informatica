@@ -2,12 +2,13 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 app.use(cors())
+app.use(express.json())
 
 app.get('/', function (req, res) {
     // res.setHeader('Access-Control-Allow-Origin', '*')
     res.send('ZecaInfo')
 })
-
+ 
 // const lista_produtos = [
 //     {
 //         "titulo": "Red Nike",
@@ -81,11 +82,24 @@ app.get("/produtos/:categoria/:ordem", function (req, res) {
 })
 
 app.post("/produto/", function (req, res) {
-    console.dir(req) 
+    console.dir(req.body)
     console.log("---------------------")
     const { titulo, preco, descricao, avaliacao, foto, categoria } = req.body;
     conexao.query(`
         INSERT INTO produtos (titulo, preco, descricao, avaliacao, foto, categoria) VALUES ('${titulo}', ${preco}, '${descricao}', ${avaliacao}, '${foto}', '${categoria}')`, function (erro, resultado) {
+        if (erro) {
+            res.json(erro);
+        }
+        res.send(resultado.insertId);
+    });
+})
+
+
+app.post("/unidades/", function (req, res) {
+    console.dir(req.body)
+    const { nome_da_loja, foto, endereco, email, telefone, latitude, longitude } = req.body;
+    conexao.query(`
+        INSERT INTO unidades (nome_da_loja, foto, endereco, email, telefone, latitude, longitude) VALUES ('${nome_da_loja}', '${foto}', '${endereco}', '${email}', '${telefone}', '${latitude}', '${longitude}')`, function (erro, resultado) {
         if (erro) {
             res.json(erro);
         }
