@@ -11,6 +11,18 @@ function fnLimparCampos() {
     document.getElementById("form-produtos").reset()
 }
 
+function fnToastSalvar() {
+    // const toastEl = document.querySelector(".toast")
+    // const toast = new bootstrap.Toast(toastEl)
+    // toast.show("")
+
+    var toastElList = [].slice.call(document.querySelectorAll(".toast")) 
+    var toastList = toastElList.map(function (toastEl) {
+        return new bootstrap.Toast(toastEl)
+    })
+    toastList.forEach(toast => toast.show())
+} 
+ 
 function fnCadastrarProdutos() {
 
     let formDados = {
@@ -33,14 +45,13 @@ function fnCadastrarProdutos() {
         .then(dados => {
             fnLimparCampos()
             console.log(dados)
+            fnToastSalvar()
         })
         .catch(erro => console.log(erro.message))
 }
 
-
 let foto = document.getElementById("foto")
 let btn_salvar = document.getElementById("btn-salvar-produto")
-
 
 foto.addEventListener("blur", function () {
     fnAlterarFoto()
@@ -48,4 +59,4 @@ foto.addEventListener("blur", function () {
 
 btn_salvar.addEventListener("click", function () {
     fnCadastrarProdutos()
-})
+}) 

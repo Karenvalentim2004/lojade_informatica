@@ -1,5 +1,9 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+
 const cors = require('cors')
 app.use(cors())
 app.use(express.json())
@@ -8,7 +12,7 @@ app.get('/', function (req, res) {
     // res.setHeader('Access-Control-Allow-Origin', '*')
     res.send('ZecaInfo')
 })
- 
+
 // const lista_produtos = [
 //     {
 //         "titulo": "Red Nike",
@@ -82,24 +86,18 @@ app.get("/produtos/:categoria/:ordem", function (req, res) {
 })
 
 app.post("/produto/", function (req, res) {
-    console.dir(req.body)
-    console.log("---------------------")
-    const { titulo, preco, descricao, avaliacao, foto, categoria } = req.body;
-    conexao.query(`
-        INSERT INTO produtos (titulo, preco, descricao, avaliacao, foto, categoria) VALUES ('${titulo}', ${preco}, '${descricao}', ${avaliacao}, '${foto}', '${categoria}')`, function (erro, resultado) {
+    const data = req.body
+    conexao.query(`INSERT INTO produtos set?`, [data], function (erro, resultado) {
         if (erro) {
-            res.json(erro);
+            res.json(erro)
         }
         res.send(resultado.insertId);
     });
 })
 
-
 app.post("/unidades/", function (req, res) {
-    console.dir(req.body)
-    const { nome_da_loja, foto, endereco, email, telefone, latitude, longitude } = req.body;
-    conexao.query(`
-        INSERT INTO unidades (nome_da_loja, foto, endereco, email, telefone, latitude, longitude) VALUES ('${nome_da_loja}', '${foto}', '${endereco}', '${email}', '${telefone}', '${latitude}', '${longitude}')`, function (erro, resultado) {
+    const data = req.body
+    conexao.query(`INSERT INTO produtos set?`, [data], function (erro, resultado) {
         if (erro) {
             res.json(erro);
         }
@@ -113,6 +111,22 @@ app.get("/unidades", function (req, res) {
     conexao.query("SELECT * FROM gutoxa27_bd_loja.unidades", function (erro, lista_unidades, campos) {
         console.log(lista_unidades);
         res.send(lista_unidades)
+    })
+})
+
+app.post("/login/", function (req, res) {
+    const ususario = req.body.usuario
+    const senha = req.body.senha
+    conexao.query(`SELECT * FROM usuarios where usuario='${ususario}' and senha='${senha}'`, function (erro, resultado, campos) {
+        if (erro) {
+            res.send(erro)
+        } else {
+            if (resultado.length > 0) {
+                res.status(200).send('Sucesso!')
+            } else {
+                res.status(401).send('Inválido')
+            }
+        }
     })
 })
 

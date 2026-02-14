@@ -50,10 +50,12 @@ function fnCarregarDados() {
         .then((produtos) => {
             produtos.forEach(produto => {
                 fnMontarCardProduto(produto)
+
+                
             });
         })
         .catch(erro => console.log(erro.message))
-}
+} 
 
 fnCarregarDados()
 
