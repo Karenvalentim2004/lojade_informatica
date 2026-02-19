@@ -122,11 +122,23 @@ app.post("/login/", function (req, res) {
             res.send(erro)
         } else {
             if (resultado.length > 0) {
-                res.status(200).send('Sucesso!')
+                res.sendStatus(200)
             } else {
-                res.status(401).send('Inválido')
+                res.sendStatus(401)
             }
         }
+    })
+})
+
+app.post("/usuarios/", function (req, res) {
+    const dadosform = req.body
+
+    // conexao.query(`INSERT INTO usuarios (usuario, senha, nome, sobrenome, cidade, estado, permissao) VALUES ('${ususario}', '${senha}', '${nome}', '${sobrenome}', '${cidade}', '${estado}', ${permissao})`, function (erro, resultado) {
+    conexao.query(`INSERT INTO usuarios SET ?`, dadosform, function (erro, resultado) {
+       if (erro) {
+            res.json(erro);
+        }
+        res.send(resultado.insertId);
     })
 })
 
