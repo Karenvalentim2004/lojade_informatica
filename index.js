@@ -61,7 +61,6 @@ conexao.connect(function (erro) {
 app.get("/produtos", function (req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*')
     conexao.query("SELECT * FROM gutoxa27_bd_loja.produtos", function (erro, lista_produtos, campos) {
-        // console.log(lista_produtos);
         res.send(lista_produtos)
     })
 })
@@ -93,6 +92,14 @@ app.post("/produto/", function (req, res) {
         }
         res.send(resultado.insertId);
     });
+})
+
+//red One - [GET] / produto
+app.get("/produto/:id", function (req, res) {
+    const id = req.params.id
+    conexao.query("SELECT * FROM produtos where id= ? ", [id], function (erro, dados, campos) {
+        res.json(dados)
+    })
 })
 
 app.post("/unidades/", function (req, res) {
@@ -135,7 +142,7 @@ app.post("/usuarios/", function (req, res) {
 
     // conexao.query(`INSERT INTO usuarios (usuario, senha, nome, sobrenome, cidade, estado, permissao) VALUES ('${ususario}', '${senha}', '${nome}', '${sobrenome}', '${cidade}', '${estado}', ${permissao})`, function (erro, resultado) {
     conexao.query(`INSERT INTO usuarios SET ?`, dadosform, function (erro, resultado) {
-       if (erro) {
+        if (erro) {
             res.json(erro);
         }
         res.send(resultado.insertId);
