@@ -12,7 +12,7 @@ function fnMontarLista(produto) {
                     <td>
                     <a href="um-produto.html?id=${produto.id}" class="btn"> <i class="bi bi-eye"></i> </a>
                     <a href="editar-produto.html?id=${produto.id}" class="btn"> <i class="bi bi-pencil"></i> </a>
-                    <button type="button" class="btn"> <i class="bi bi-trash"></i> </a>
+                    <button type="button" class="btn" onclick="fnExcluirProduto(${produto.id}, event.target)"> <i class="bi bi-trash"></i> </button>
                 </tr>
 
         </tbody>

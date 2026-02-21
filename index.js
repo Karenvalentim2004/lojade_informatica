@@ -9,35 +9,9 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/', function (req, res) {
-    // res.setHeader('Access-Control-Allow-Origin', '*')
     res.send('ZecaInfo')
 })
 
-// const lista_produtos = [
-//     {
-//         "titulo": "Red Nike",
-//         "foto":"https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHwxfHxzaG9lfGVufDB8MHx8fDE3MjEwNDEzNjd8MA&ixlib=rb-4.0.3&q=80&w=1080",
-//         "descricao": "Tênis leve, com design versátil e acabamento moderno, perfeito para acompanhar sua rotina.",
-//         "preco": 499.00,
-//         "avaliacao": 5
-//     },
-//     {
-//         "titulo": "Blue Nike",
-//         "foto":"https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-//         "descricao": "Modelo confortável, resistente e ideal para quem busca um visual urbano sem abrir mão do bem-estar.",
-//         "preco": 699.00,
-//         "avaliacao": 3
-//     },
-//     {
-//         "titulo": "Black Nike",
-//         "foto":"https://images.unsplash.com/photo-1643584549066-fc993fc9cb43?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-//         "descricao": "Tênis com ajuste confortável, visual clean e solado que garante estabilidade em cada passo.",
-//         "preco": 799.00,
-//         "avaliacao": 4
-//     }
-// ]
-
-// const lista_produtos = require ('./dados.json')
 
 let mysql = require('mysql')
 let conexao = mysql.createConnection({
@@ -102,6 +76,32 @@ app.get("/produto/:id", function (req, res) {
     })
 })
 
+//update - [PUT] / produto/:id
+app.put("/produto/:id", function (req, res) {
+    const id = req.params.id
+    const data = req.body
+
+    conexao.query(`UPDATE produtos set ? where id= ${id}`, [data], function (erro, resultado) {
+        if (erro) {
+            res.send(erro)
+        }
+        res.send({"status":200, "message": "Atualizado com sucesso!"})
+    })
+})
+
+//Delete - [DELETE] / produto/:id
+app.delete("/produto/:id", function (req, res) {
+    const id = req.params.id
+
+    conexao.query(`delete from produtos where id= ${id}`, function (erro, resultado) {
+        if (erro) {
+            res.send(erro)
+        }
+        res.send({"status":200, "message": "Excluído com sucesso!"})
+    })
+})
+
+//Unidades
 app.post("/unidades/", function (req, res) {
     const data = req.body
     conexao.query(`INSERT INTO produtos set?`, [data], function (erro, resultado) {
@@ -121,6 +121,7 @@ app.get("/unidades", function (req, res) {
     })
 })
 
+//Login
 app.post("/login/", function (req, res) {
     const ususario = req.body.usuario
     const senha = req.body.senha
@@ -137,6 +138,7 @@ app.post("/login/", function (req, res) {
     })
 })
 
+//Usuarios
 app.post("/usuarios/", function (req, res) {
     const dadosform = req.body
 
